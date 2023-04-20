@@ -1,0 +1,43 @@
+.item {
+  display: flex;
+  align-items: center;
+  padding: 9px;
+  margin-top: 5px;
+  background-color: #ddd;
+  position: relative;
+}
+.item:hover {
+  background-color: #0001;
+}
+
+input:checked + p {
+  text-decoration: line-through;
+}
+
+p {
+  cursor: default;
+  font-size: 12pt;
+  width: 95%;
+  height: 100%;
+  margin-left: 5px;
+}
+.imgConteinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  right: 5px;
+
+  width: 30px;
+  height: 30px;
+
+  cursor: pointer;
+  border-radius: 20px;
+}
+.imgConteinner:hover {
+  background-color: #0005;
+}
+.img {
+  height: 20px;
+}
