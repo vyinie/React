@@ -7,27 +7,37 @@ export default function Layout() {
   const [text, setText] = useState(null);
   const [id, setId] = useState(0);
   const [list, setList] = useState([]);
+  const add = () => {
+    setList([...list, { text: text, id: id }]);
+    setId(id + 1);
+    setText(null);
+    document.getElementById("inp").focus();
+    document.getElementById("inp").value = null;
+  };
 
   return (
     <div className="conteinner">
       <div className="form">
         <TextField
           fullWidth
-          color="primary"
           id="inp"
-          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if ((e.key === "Enter") & (text !== null)) {
+              add();
+            }
+          }}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
           label="Add To Do"
           variant="outlined"
         />
         <Button
           onClick={() => {
-            setList([...list, { text: text, id: id }]);
-            setId(id + 1);
-            setText(null)
-            document.getElementById("inp").focus();
-            document.getElementById("inp").value = null;
+            if (text !== null) {
+              add();
+            }
           }}
-          color="primary"
           variant="outlined"
         >
           Add
@@ -36,10 +46,21 @@ export default function Layout() {
       <div className="listItem">
         {list.map((i) => (
           <div key={i.id}>
-            <Item id={i.id} text={i.text} arr={list} set={setList}/>
+            <Item id={i.id} text={i.text} arr={list} setList={setList} />
           </div>
         ))}
       </div>
+      <Button
+        variant="contained"
+        color="error"
+        className="delBtn"
+        onClick={() => {
+          setList([]);
+          setId(0);
+        }}
+      >
+        Apagar tudo
+      </Button>
     </div>
   );
 }

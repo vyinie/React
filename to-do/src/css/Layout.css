@@ -1,10 +1,32 @@
-
-
+.conteinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .form {
   display: flex;
   align-items: center;
   gap: 20px;
   padding: 10px;
   background-color: #ddd;
+  width: 400px;
+  position: relative;
 }
 
+.listItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 605px;
+  max-height: 400px;
+  gap: 0 5px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+.delBtn{
+  position: absolute;
+  right: -130px;
+  bottom: -15px;
+  
+}

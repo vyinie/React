@@ -1,26 +1,37 @@
 .item {
+  position: relative;
   display: flex;
-  align-items: center;
-  padding: 9px;
+  /* align-content: center; */
+
+  height: 37px;
+  width: 300px;
+  padding: 2px;
   margin-top: 5px;
   background-color: #ddd;
-  position: relative;
 }
 .item:hover {
-  background-color: #0001;
+  background-color: #5553;
 }
-
-input:checked + p {
+.box {
+  margin-left: 5px;
+}
+input:checked ~ label {
   text-decoration: line-through;
 }
 
-p {
-  cursor: default;
-  font-size: 12pt;
-  width: 95%;
-  height: 100%;
+label {
+  display: flex;
+  align-items: center;
+
+  font-size: 15pt;
+
+  height: 90%;
+  width: 70%;
+
   margin-left: 5px;
+  overflow: hidden;
 }
+
 .imgConteinner {
   display: flex;
   align-items: center;
@@ -38,6 +49,29 @@ p {
 .imgConteinner:hover {
   background-color: #0005;
 }
-.img {
+.imgEdit{
+  right: 30px;
+}
+img {
   height: 20px;
+}
+
+.boxModel {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background-color: #fff;  
+  padding: 10px;
+}
+.btnEdit{
+  position: absolute;
+  left: 245px;
+  top: 5px;
+}
+.btnCancelEdit{
+  position: absolute;
+  left: 40px;
+  top: 5px;
 }
