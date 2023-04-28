@@ -11,7 +11,9 @@ export default function LayoutColors({
   setTrueColor,
   score,
   setScore,
+  openDifChecker,
 }) {
+  // set blocks wit false colors
   const [blocks, setBlocks] = useState([0, 1, 2, 3, 4, 5]);
   const [falseColors, setFalseColors] = useState([
     colorRandom(),
@@ -22,32 +24,61 @@ export default function LayoutColors({
     colorRandom(),
   ]);
 
+  // chooses a random block to true color
   const [trueId, setTrueId] = useState(idRandom(blocks.length));
 
-  const radios = document.getElementsByClassName("inpRad");
+  // set difficultylvl
+  function setDiff(e) {
+    if (e.target.id == "LvlEz") {
+      setBlocks([0, 1, 2, 3]);
+      setTrueId(idRandom(blocks.length));
+      setLifes(3);
 
-  function setLvlEz() {
-    setBlocks([0, 1, 2, 3]);
-    setTrueId(idRandom(blocks.length));
-    document.querySelector(".LayoutColors").style.width = "350px";
-    setLifes(3);
-    reset();
-  }
-  function setLvlNormal() {
-    setBlocks([0, 1, 2, 3, 4, 5]);
-    setTrueId(idRandom(blocks.length));
-    document.querySelector(".LayoutColors").style.width = "";
-    setLifes(3);
-    reset();
-  }
-  function setLvlPleno() {
-    setBlocks([0, 1, 2, 3, 4, 5]);
-    document.querySelector(".LayoutColors").style.width = "";
-    setTrueId(idRandom(blocks.length));
-    setLifes(1);
+      document.querySelector(".LayoutColors").style.width = "min-content";
+
+      e.target.style.backgroundColor = "#ddd";
+      e.target.style.boxShadow = "#0005 inset -3px 3px 4px";
+
+      document.getElementById("LvlJunior").style.backgroundColor = "";
+      document.getElementById("LvlJunior").style.boxShadow = "";
+
+      document.getElementById("LvlPleno").style.backgroundColor = "";
+      document.getElementById("LvlPleno").style.boxShadow = "";
+    } else if (e.target.id == "LvlJunior") {
+      setBlocks([0, 1, 2, 3, 4, 5]);
+      setTrueId(idRandom(blocks.length));
+      setLifes(3);
+
+      e.target.style.backgroundColor = "#ddd";
+      e.target.style.boxShadow = "#0005 inset -3px 3px 4px";
+
+      document.getElementById("LvlEz").style.backgroundColor = "";
+      document.getElementById("LvlEz").style.boxShadow = "";
+
+      document.getElementById("LvlPleno").style.backgroundColor = "";
+      document.getElementById("LvlPleno").style.boxShadow = "";
+
+      document.querySelector(".LayoutColors").style.width = "";
+    } else if (e.target.id == "LvlPleno") {
+      setBlocks([0, 1, 2, 3, 4, 5]);
+      setTrueId(idRandom(blocks.length));
+      setLifes(1);
+
+      document.querySelector(".LayoutColors").style.width = "";
+
+      e.target.style.backgroundColor = "#ddd";
+      e.target.style.boxShadow = "#0005 inset -3px 3px 4px";
+
+      document.getElementById("LvlJunior").style.backgroundColor = "";
+      document.getElementById("LvlJunior").style.boxShadow = "";
+
+      document.getElementById("LvlEz").style.backgroundColor = "";
+      document.getElementById("LvlEz").style.boxShadow = "";
+    }
     reset();
   }
 
+  // ... resets... the game... ... ... bruh
   function reset() {
     setTrueColor(colorRandom());
     setTrueId(idRandom(blocks.length));
@@ -61,39 +92,64 @@ export default function LayoutColors({
     ]);
   }
 
+  // fig out if u lost and shows the right color
+  useEffect(() => {
+    if (lifes === 0) {
+      const wrongBlocks = blocks.filter((i) => i != trueId);
+      wrongBlocks.map((i) => {
+        document.getElementById(i).style.backgroundColor = "#0005";
+      });
+    }
+    document.querySelector(".popupBtn").addEventListener(
+      "click",
+      () => {
+        document.querySelector(".popupWrapper").style.display = "";
+        document.getElementById("LvlPleno").style.backgroundColor !== ""
+          ? setLifes(1)
+          : setLifes(3);
+        setScore(0);
+        reset();
+        setScore(0)
+      },
+      [lifes]
+    );
+  });
+  // selects the normal lvl when load the page
+  useEffect(() => {
+    document.getElementById("LvlJunior").click();
+  }, []);
+
+  // ===============================HTML===============================
   return (
     <div className="LayoutColors">
       {blocks.map((i) =>
+        // load the right block
         i == trueId ? (
           <span
             id={i}
             style={{ backgroundColor: trueColor }}
             key={blocks.indexOf(i)}
             className="colorBlock"
-            onClick={(e) => {
+            onClick={() => {
               reset();
               (lifes < 3) &
-                (document.getElementById("btnSetLvlPleno").style
-                  .backgroundColor ===
+                (document.getElementById("LvlPleno").style.backgroundColor ===
                   "") && setLifes(lifes + 1);
               setScore(score + 100);
-              console.log(e.target.style.backgroundColor);
             }}
           >
             <div id={`hover${i}`} className="blockHover"></div>
           </span>
         ) : (
+          // load the right block
           <span
             id={i}
             style={{ backgroundColor: falseColors[i] }}
             key={blocks.indexOf(i)}
             className="colorBlock"
-            onClick={() => {
+            onClick={(e) => {
+              e.target.style.backgroundColor ="#444"
               setLifes(lifes - 1);
-              if (lifes === 1) {
-                // setDifficult();
-                reset();
-              }
             }}
           >
             <div id={`hover${i}`} className="blockHover"></div>
@@ -101,50 +157,29 @@ export default function LayoutColors({
         )
       )}
 
-      {/* ========================= difficult control ======================================= */}
-      <div className="difficultControl">
-        <button
-          onClick={(e) => {
-            e.target.style.backgroundColor = "#ddd";
-            document.getElementById("btnSetLvlNormal").style.backgroundColor =
-              "";
-            document.getElementById("btnSetLvlPleno").style.backgroundColor =
-              "";
-            setLvlEz();
-          }}
-          id="btnSetLvlEz"
-          className="btnDifficult"
-        >
-          noob
-        </button>
-        <button
-          onClick={(e) => {
-            e.target.style.backgroundColor = "#ddd";
-            document.getElementById("btnSetLvlEz").style.backgroundColor = "";
-            document.getElementById("btnSetLvlPleno").style.backgroundColor =
-              "";
+      {/* ========================= difficulty lvl control ========================= */}
+      <div
+        className="difFControlWrapper"
+        onClick={(e) => {
+          openDifChecker(e);
+        }}
+      >
+        <div className="difficultyControl">
+          {/* NOOB LVL LOL */}
+          <button id="LvlEz" className="btnDifficulty" onClick={setDiff}>
+            noob
+          </button>
 
-            setLvlNormal();
-          }}
-          id="btnSetLvlNormal"
-          className="btnDifficult"
-        >
-          normal
-        </button>
-        <button
-          onClick={(e) => {
-            e.target.style.backgroundColor = "#ddd";
-            document.getElementById("btnSetLvlEz").style.backgroundColor = "";
-            document.getElementById("btnSetLvlNormal").style.backgroundColor =
-              "";
+          {/* normal LVL */}
+          <button onClick={setDiff} id="LvlJunior" className="btnDifficulty">
+            Junior
+          </button>
 
-            setLvlPleno();
-          }}
-          id="btnSetLvlPleno"
-          className="btnDifficult"
-        >
-          pleno
-        </button>
+          {/* pleno Lvl */}
+          <button onClick={setDiff} id="LvlPleno" className="btnDifficulty">
+            Pleno
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,33 @@
-.lifesContainer {
-  display: flex;
-  width: 100px;
-  height: 80px;
-  position: absolute;
-  right: 180px;
-  top: 30px;
+@media (width < 321px) {
+  .lifesContainer {
+    display: flex;
+    justify-content: space-around;
+
+    width: 100px;
+    height: 40px;
+
+    margin-top: 10px;
+    padding: 5px 10px;
+  }
+
+  .life {
+    font-size: 20pt;
+  }
 }
 
-.life{
-    font-size: 30pt;
+@media (width > 1023px) and (width < 1201px) {
+  .lifesContainer {
+    /* display: flex; */
+    /* justify-content: space-around; */
 
+    position: absolute;
+    top: 10%;
+    left: 35%;
+
+    width: 100px;
+    height: 40px;
+  }
+  .life {
+    font-size: 30pt;
+  }
 }
